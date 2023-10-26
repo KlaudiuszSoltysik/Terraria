@@ -3,8 +3,8 @@
 #include "game.hpp"
 
 /*
-g++ *.cpp -o zGame -lsfml-graphics -lsfml-window -lsfml-system
-./zGame
+g++ *.cpp -o executeable -lsfml-graphics -lsfml-window -lsfml-system
+./executeable
 */
 
 int main() {
