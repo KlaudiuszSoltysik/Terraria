@@ -14,18 +14,24 @@ int main() {
     Game game(window);
 
     while (window.isOpen()) {
+        bool LMB_pressed = false;
+
         // Detect events
         sf::Event event;
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
                 window.close();
+            } else if (event.type == sf::Event::MouseButtonPressed) {
+                if (event.mouseButton.button == sf::Mouse::Left) {
+                    LMB_pressed = true;
+                }
             }
         }
 
         
         window.clear();
 
-        game.update(window);
+        game.update(window, LMB_pressed);
 
         window.display();
     }
