@@ -1,10 +1,3 @@
-#include <SFML/Graphics.hpp>
-
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <string>
-
 #include "map.hpp"
 
 

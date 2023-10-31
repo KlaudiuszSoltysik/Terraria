@@ -1,22 +1,29 @@
-#ifndef GAME_H
-#define GAME_H
+#ifndef GAME_HPP
+#define GAME_HPP
 
+#include <SFML/Audio.hpp>
+
+#include <memory>
+
+#include "game.hpp"
 #include "map.hpp"
 #include "button.hpp"
+#include "progress_bar.hpp"
+#include "shape_container.hpp"
 
 
 class Game {
 private:
-   Map map;
-   Button play_button;
-   Button menu_button;
-   std::string state = "menu";
+    Map map;
+    sf::Music music;
+    std::string state = "menu";
+    int volume = 5;
+    bool LMB_pressed = false;
 public:
     Game(sf::RenderWindow &window);
     ~Game();
-    void update(sf::RenderWindow &window, bool LMB_pressed);
-    void renderMenu(sf::RenderWindow &window);
-    void renderInterface(sf::RenderWindow &window);
+    void update(sf::RenderWindow &window);
+    void LMBPress();
 };
 
 #endif

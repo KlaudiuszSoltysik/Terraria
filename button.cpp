@@ -1,10 +1,7 @@
-#include <SFML/Graphics.hpp>
-#include <iostream>
-
 #include "button.hpp"
 
 
-Button::Button(sf::Vector2f size, sf::Vector2f position, std::function<void()> on_click, std::string text_string, sf::Color color) : on_click(on_click) {
+Button::Button(std::function<void()> on_click, std::string text_string, sf::Vector2f size, sf::Vector2f position, sf::Color color) : on_click(on_click), text_string(text_string), size(size) {
     button = sf::RectangleShape(size);
     button.setPosition(position);
     button.setFillColor(color);
@@ -33,4 +30,16 @@ void Button::detectOnClick(sf::RenderWindow &window) {
     if (mouse_position.x >= button_position.x && mouse_position.x <= button_position.x + button_size.x && mouse_position.y >= button_position.y && mouse_position.y <= button_position.y + button_size.y) {
         on_click();
     }
+}
+
+void Button::setSize(sf::Vector2f size) {
+    size = size;
+
+    button.setSize(size);
+    text.setCharacterSize(size.y * 0.8);
+}
+
+void Button::setPosition(sf::Vector2f position) {
+    button.setPosition(position);
+    text.setPosition(position.x + (size.x - text.getGlobalBounds().width) / 2, position.y);
 }

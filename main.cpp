@@ -14,8 +14,6 @@ int main() {
     Game game(window);
 
     while (window.isOpen()) {
-        bool LMB_pressed = false;
-
         // Detect events
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -23,7 +21,7 @@ int main() {
                 window.close();
             } else if (event.type == sf::Event::MouseButtonPressed) {
                 if (event.mouseButton.button == sf::Mouse::Left) {
-                    LMB_pressed = true;
+                    game.LMBPress();
                 }
             }
         }
@@ -31,7 +29,7 @@ int main() {
         
         window.clear();
 
-        game.update(window, LMB_pressed);
+        game.update(window);
 
         window.display();
     }
