@@ -1,45 +1,76 @@
-#include "button.hpp"
+#ifndef BUTTON_HPP
+#define BUTTON_HPP
+
+#include <SFML/Graphics.hpp>
+
+#include <iostream>
+
+#include "abstract_rectangle_shape.cpp"
 
 
-Button::Button(std::function<void()> on_click, std::string text_string, sf::Vector2f size, sf::Vector2f position, sf::Color color) : on_click(on_click), text_string(text_string), size(size) {
-    button = sf::RectangleShape(size);
-    button.setPosition(position);
-    button.setFillColor(color);
-    
-    font.loadFromFile("assets/fonts/caveat.ttf");
-    text.setFont(font);
-    text.setString(text_string);
-    text.setCharacterSize(size.y * 0.8);
-    text.setFillColor(sf::Color::White);
-    text.setPosition(position.x + (size.x - text.getGlobalBounds().width) / 2, position.y);
-}
+class Button : public AbstractRectangleShape {
+    private:
+        sf::RectangleShape m_rectangle;
+        sf::Text m_text;
+        std::function<void()> m_on_click;
+        sf::Vector2f m_size;
+        sf::Vector2f m_position;
+        sf::RenderWindow& m_window;
+    public:
+        Button(sf::RectangleShape rectangle, sf::Text text, std::function<void()> on_click, sf::RenderWindow& window) : m_rectangle(rectangle), m_text(text), m_on_click(on_click), m_window(window) {}
 
-Button::~Button() {
-}
+        virtual void setSize(sf::Vector2f size) {
+            m_size = size;
 
-void Button::draw(sf::RenderTarget &window, sf::RenderStates states) const {
-    window.draw(button, states);
-    window.draw(text, states);
-}
+            m_rectangle.setSize(m_size);
+            m_text.setCharacterSize(m_size.y * 0.8);
+            
+            m_text.setPosition(sf::Vector2f(m_position.x + ((m_size.x - m_text.getGlobalBounds().width) / 2), m_position.y));
+        }
 
-void Button::detectOnClick(sf::RenderWindow &window) {
-    sf::Vector2i mouse_position = sf::Mouse::getPosition(window);
-    sf::Vector2f button_position = button.getPosition();
-    sf::Vector2f button_size = button.getSize();
-    
-    if (mouse_position.x >= button_position.x && mouse_position.x <= button_position.x + button_size.x && mouse_position.y >= button_position.y && mouse_position.y <= button_position.y + button_size.y) {
-        on_click();
-    }
-}
+        virtual void setPosition(sf::Vector2f position) {
+            m_position = position;
 
-void Button::setSize(sf::Vector2f size) {
-    size = size;
+            m_rectangle.setPosition(m_position);
+            m_text.setPosition(sf::Vector2f(m_position.x + ((m_size.x - m_text.getGlobalBounds().width) / 2), m_position.y));
+        }
 
-    button.setSize(size);
-    text.setCharacterSize(size.y * 0.8);
-}
+        void setRectangle(sf::RectangleShape rectangle) {
+            m_rectangle = rectangle;
+        }
 
-void Button::setPosition(sf::Vector2f position) {
-    button.setPosition(position);
-    text.setPosition(position.x + (size.x - text.getGlobalBounds().width) / 2, position.y);
-}
+        void setText(sf::Text text) {
+            m_text = text;
+        }
+
+        void setOnClick(std::function<void()> on_click) {
+            m_on_click = on_click;
+        }
+
+        sf::RectangleShape& getRectangle() {
+            return m_rectangle;
+        }
+
+        sf::Text& getText() {
+            return m_text;
+        }
+
+        virtual sf::Vector2f getSize() {
+            return m_size;
+        }
+
+        virtual void draw(sf::RenderTarget &window, sf::RenderStates states) const {
+            window.draw(m_rectangle, states);
+            window.draw(m_text, states);
+        }
+
+        void checkOnClick() {
+            sf::Vector2i mouse_position = sf::Mouse::getPosition(m_window);
+
+            if (mouse_position.x >= m_position.x && mouse_position.x <= m_position.x + m_size.x && mouse_position.y >= m_position.y && mouse_position.y <= m_position.y + m_size.y) {
+                m_on_click();
+            }
+        }
+};
+
+#endif

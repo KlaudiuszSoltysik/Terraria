@@ -1,15 +1,19 @@
-#include "abstract_rectangle_shape.hpp"
+#ifndef ABSTRACT_RECTANGLE_SHAPE_HPP
+#define ABSTRACT_RECTANGLE_SHAPE_HPP
 
-AbstractRectangleShape::AbstractRectangleShape() {
-}
+#include <SFML/Graphics.hpp>
 
-AbstractRectangleShape::~AbstractRectangleShape() {
-}
+#include <algorithm>
+#include <iostream>
 
-void AbstractRectangleShape::setSize(sf::Vector2f size) {
-    sf::RectangleShape::setSize(size);
-}
 
-void AbstractRectangleShape::setPosition(sf::Vector2f position) {
-    sf::RectangleShape::setPosition(position);
-}
+class AbstractRectangleShape : public sf::RectangleShape {
+    public:
+        AbstractRectangleShape() {}
+        ~AbstractRectangleShape() {}
+        virtual void setSize(sf::Vector2f size) = 0;
+        virtual void setPosition(sf::Vector2f position) = 0;
+        virtual sf::Vector2f getSize() = 0;
+};
+
+#endif

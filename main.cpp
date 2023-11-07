@@ -1,6 +1,6 @@
 #include <SFML/Graphics.hpp>
 
-#include "game.hpp"
+#include "game.cpp"
 
 /*
 g++ *.cpp -o executeable -lsfml-graphics -lsfml-window -lsfml-system
@@ -14,7 +14,6 @@ int main() {
     Game game(window);
 
     while (window.isOpen()) {
-        // Detect events
         sf::Event event;
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
@@ -29,7 +28,7 @@ int main() {
         
         window.clear();
 
-        game.update(window);
+        game.update();
 
         window.display();
     }
