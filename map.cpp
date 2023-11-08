@@ -50,7 +50,7 @@ class Map {
                     sprite.setTexture(m_texture_brick1);
                     sprite.setScale(m_block_width / size.x, m_block_width / size.y);
                 } else if (c == '#') {
-                    sf::Vector2u size = m_texture_brick1.getSize();
+                    sf::Vector2u size = m_texture_brick2.getSize();
 
                     sprite.setTexture(m_texture_brick2);
                     sprite.setScale(m_block_width / size.x, m_block_width / size.y);
