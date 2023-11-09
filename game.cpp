@@ -2,6 +2,7 @@
 #define GAME_HPP
 
 #include <SFML/Audio.hpp>
+#include <SFML/Graphics.hpp>
 
 #include <memory>
 
@@ -12,9 +13,7 @@
 class Game {
     private:
         Map m_map;
-        sf::Music m_music;
         std::string m_state = "menu";
-        double m_volume = 5;
         bool m_LMB_pressed = false;
         sf::RenderWindow &m_window;
         Interface interface;
@@ -31,6 +30,10 @@ class Game {
             }
 
             interface.update();
+        }
+
+        void spacePress() {
+            m_map.heroJump();
         }
 };
 

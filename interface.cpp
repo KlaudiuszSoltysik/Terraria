@@ -2,6 +2,7 @@
 #define INTERFACE_HPP
 
 #include <SFML/Audio.hpp>
+#include <SFML/Graphics.hpp>
 
 #include <memory>
 
@@ -19,7 +20,7 @@ class Interface {
         bool &m_LMB_pressed;
         sf::RenderWindow &m_window;
     public:
-        Interface(std::string &state, bool &LMB_pressed, sf::RenderWindow &window) : m_state(state), m_window(window), m_LMB_pressed(LMB_pressed) {
+        Interface(std::string &state, bool &LMB_pressed, sf::RenderWindow &window) : m_state(state), m_LMB_pressed(LMB_pressed), m_window(window) {
             m_music.openFromFile("assets/sound/magenta.wav");
             m_music.play();
             m_music.setVolume(m_volume * 10);

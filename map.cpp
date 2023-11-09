@@ -8,6 +8,8 @@
 #include <sstream>
 #include <string>
 
+#include "hero.cpp"
+
 
 class Map {
     private:
@@ -17,8 +19,9 @@ class Map {
         std::string m_map_filename = "map.txt";
         sf::Texture m_texture_brick1;
         sf::Texture m_texture_brick2;
+        Hero m_hero;
     public:
-        Map(sf::RenderWindow &window) : m_window(window), m_block_width(window.getSize().y / 10) {
+        Map(sf::RenderWindow &window) : m_window(window), m_block_width(window.getSize().y / 10), m_hero(window) {
             std::ifstream map_file;
             map_file.open(m_map_filename);
 
@@ -38,30 +41,31 @@ class Map {
             int row = 0;
 
             for (char c : m_contents) {
-                sf::Sprite sprite;
+                sf::RectangleShape rec;
+                rec.setSize(sf::Vector2f(m_block_width, m_block_width));
 
                 if (c == '\n') {
                     row++;
                     col = 0;
                     continue;
                 } else if (c == '_') {
-                    sf::Vector2u size = m_texture_brick1.getSize();
-
-                    sprite.setTexture(m_texture_brick1);
-                    sprite.setScale(m_block_width / size.x, m_block_width / size.y);
+                    rec.setFillColor(sf::Color::Black);
                 } else if (c == '#') {
-                    sf::Vector2u size = m_texture_brick2.getSize();
-
-                    sprite.setTexture(m_texture_brick2);
-                    sprite.setScale(m_block_width / size.x, m_block_width / size.y);
+                    rec.setFillColor(sf::Color::Cyan);
                 }
 
-                sprite.setPosition(col * m_block_width, row * m_block_width);
+                rec.setPosition(col * m_block_width, row * m_block_width);
                 
-                m_window.draw(sprite);
+                m_window.draw(rec);
 
                 col++;
             }
+            m_hero.update();
+            m_window.draw(m_hero);
+        }
+
+        void heroJump() {
+            m_hero.jump();
         }
 };
 
