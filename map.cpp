@@ -7,6 +7,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <vector>
 
 #include "hero.cpp"
 
@@ -20,6 +21,7 @@ class Map {
         sf::Texture m_texture_brick1;
         sf::Texture m_texture_brick2;
         Hero m_hero;
+        std::vector<sf::RectangleShape> m_walls;
     public:
         Map(sf::RenderWindow &window) : m_window(window), m_block_width(window.getSize().y / 10), m_hero(window) {
             std::ifstream map_file;
@@ -31,12 +33,11 @@ class Map {
             map_file.close();
 
             m_contents = file_contents.str();
-
-            m_texture_brick1.loadFromFile("assets/textures/brick_1.jpg");
-            m_texture_brick2.loadFromFile("assets/textures/brick_2.png");
         }
 
         void update() {
+            m_walls.clear();
+
             int col = 0;
             int row = 0;
 
@@ -52,6 +53,10 @@ class Map {
                     rec.setFillColor(sf::Color::Black);
                 } else if (c == '#') {
                     rec.setFillColor(sf::Color::Cyan);
+                } else if (c == '*') {
+                    rec.setFillColor(sf::Color::Yellow);
+                    rec.setPosition(col * m_block_width, row * m_block_width);
+                    m_walls.push_back(rec);
                 }
 
                 rec.setPosition(col * m_block_width, row * m_block_width);
@@ -60,7 +65,7 @@ class Map {
 
                 col++;
             }
-            m_hero.update();
+            m_hero.update(m_walls);
             m_window.draw(m_hero);
         }
 
