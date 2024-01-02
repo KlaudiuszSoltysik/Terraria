@@ -22,6 +22,7 @@ class Map {
         std::string m_map_filename = "map.txt";
         Hero m_hero;
         std::map<char, std::vector<sf::RectangleShape>> m_map;
+        double m_x_speed = 2;
     public:
         Map(sf::RenderWindow &window) : m_window(window), m_block_width(window.getSize().y / 10), m_hero(window) {
             std::ifstream map_file;
@@ -67,10 +68,13 @@ class Map {
         }
 
         void update() {
+            m_x_speed += 0.005;
+
             for (auto &pair : m_map) {
                 for (sf::RectangleShape &rec : pair.second) {
-                    auto position = rec.getPosition();
-                    rec.setPosition(position.x - 1, position.y);
+                    sf::Vector2f position = rec.getPosition();
+
+                    rec.setPosition(position.x - m_x_speed, position.y);
                     m_window.draw(rec);
                 }
             }

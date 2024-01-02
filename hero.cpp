@@ -24,11 +24,9 @@ class Hero : public sf::RectangleShape {
         void update(std::vector<sf::RectangleShape> &walls) {
             m_position = getPosition();
             sf::Vector2u window_size = m_window.getSize();
+
+            m_y_velocity += m_gravity;
             
-            if (m_y_velocity != 0.0) {
-                m_y_velocity += m_gravity;
-            }
-                
             double position_y = m_position.y + m_y_velocity;
 
             if (position_y < m_block_width) {
@@ -45,7 +43,7 @@ class Hero : public sf::RectangleShape {
         }
 
         void jump() {
-            if (m_y_velocity == 0.0) {
+            if (m_y_velocity > m_gravity) {
                 m_y_velocity = -23.0;
             }
         }
@@ -68,16 +66,16 @@ class Hero : public sf::RectangleShape {
                 int wall_left = wall_position.x;
                 int wall_right = wall_position.x + wall_size.x;
 
-                if (hero_top < wall_bottom && hero_bottom > wall_bottom && (hero_right > wall_left || hero_left < wall_right)) {
+                if (hero_top < wall_bottom && hero_bottom > wall_bottom && ((hero_right > wall_left && hero_left < wall_left) || (hero_left < wall_right && hero_right > wall_right))) {
                     m_y_velocity = 0.0;
                     position_y = wall_bottom;
 
                     return;
-                } else if (hero_bottom > wall_top && hero_top < wall_top && (hero_right > wall_left || hero_left < wall_right)) {
+                } else if (hero_bottom > wall_top && hero_top < wall_top && ((hero_right > wall_left && hero_left < wall_left) || (hero_left < wall_right && hero_right > wall_right))) {
                     if (m_y_velocity > 0.0) {
-                        
                         position_y = wall_top - hero_size.y;
                     }
+
                     m_y_velocity = 0.0;
 
                     return;
